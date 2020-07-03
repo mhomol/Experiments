@@ -1,0 +1,7 @@
+rg="graphconnectorspoc"
+location="eastus"
+my_ip=
+
+az group create --location $location --name $rg
+
+az deployment group create --name "allofthethings" --resource-group $rg --template-file full_simple.json --parameters rg=$rg location=$location my_ip=$my_ip --rollback-on-error
