@@ -14,10 +14,6 @@
             "defaultValue": "eastus",
             "type": "string"
         },
-        "locationDisplay": {
-            "defaultValue": "East US",
-            "type": "string"
-        },
         "servers_serverlessserverpoc_name": {
             "defaultValue": "serverlessserverpoc",
             "type": "String"
@@ -485,7 +481,7 @@
             "type": "Microsoft.Sql/servers/auditingPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/Default')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
             ],
@@ -545,7 +541,7 @@
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/master/Default')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
             ],
@@ -585,7 +581,7 @@
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/master/Default')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
             ],
@@ -616,7 +612,7 @@
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/master/current')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
             ],
@@ -727,7 +723,7 @@
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
@@ -797,7 +793,7 @@
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
@@ -830,7 +826,7 @@
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/current')]",
-            "location": "[parameters('locationDisplay')]",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
