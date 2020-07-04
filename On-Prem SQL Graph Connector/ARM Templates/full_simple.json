@@ -18,10 +18,6 @@
             "defaultValue": "myserverlessdbserver",
             "type": "String"
         },
-        "adventureworks_dbname": {
-            "defaultValue": "HomolWorks",
-            "type": "string"
-        },
         "uniquedomainprefix": {
             "defaultValue": "onprembutnotreally",
             "type": "string"
@@ -502,38 +498,6 @@
             }
         },
         {
-            "type": "Microsoft.Sql/servers/databases",
-            "apiVersion": "2019-06-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'))]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "tags": {
-                "Environment": "Development",
-                "Classification": "ThreeWill",
-                "SharePoint": "Yes"
-            },
-            "sku": {
-                "name": "GP_S_Gen5",
-                "tier": "GeneralPurpose",
-                "family": "Gen5",
-                "capacity": 2
-            },
-            "kind": "v12.0,user,vcore,serverless",
-            "properties": {
-                "collation": "SQL_Latin1_General_CP1_CI_AS",
-                "maxSizeBytes": 34359738368,
-                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
-                "zoneRedundant": false,
-                "readScale": "Disabled",
-                "readReplicaCount": 0,
-                "autoPauseDelay": 360,
-                "storageAccountType": "GRS",
-                "minCapacity": 0.5
-            }
-        },
-        {
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
             "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/master/Default')]",
@@ -713,137 +677,6 @@
                 ],
                 "emailAccountAdmins": false,
                 "retentionDays": 0
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
-            "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "auditingState": "Disabled"
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/auditingSettings",
-            "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "state": "Disabled",
-                "retentionDays": 0,
-                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
-                "isAzureMonitorTargetEnabled": false
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
-            "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "weeklyRetention": "PT0S",
-                "monthlyRetention": "PT0S",
-                "yearlyRetention": "PT0S",
-                "weekOfYear": 2
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
-            "apiVersion": "2017-10-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "retentionDays": 7
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
-            "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "state": "Disabled",
-                "retentionDays": 0,
-                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000",
-                "isAzureMonitorTargetEnabled": false
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
-            "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "state": "Enabled"
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
-            "apiVersion": "2018-06-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "state": "Disabled",
-                "disabledAlerts": [
-                    ""
-                ],
-                "emailAddresses": [
-                    ""
-                ],
-                "emailAccountAdmins": false,
-                "retentionDays": 0
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
-            "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/current')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "status": "Enabled"
-            }
-        },
-        {
-            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
-            "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_serverlessserverpoc_name'), '/', parameters('adventureworks_dbname'), '/Default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_serverlessserverpoc_name'), parameters('adventureworks_dbname'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_serverlessserverpoc_name'))]"
-            ],
-            "properties": {
-                "recurringScans": {
-                    "isEnabled": false,
-                    "emailSubscriptionAdmins": true
-                }
             }
         }
     ],
