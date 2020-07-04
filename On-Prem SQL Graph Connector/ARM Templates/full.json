@@ -649,7 +649,8 @@
                 "readReplicaCount": 0,
                 "autoPauseDelay": 360,
                 "storageAccountType": "GRS",
-                "minCapacity": 0.5
+                "minCapacity": 0.5,
+                "sampleName": "AdventureWorksLT"
             }
         },
         {
