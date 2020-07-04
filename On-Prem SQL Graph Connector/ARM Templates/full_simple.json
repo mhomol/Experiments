@@ -7,7 +7,7 @@
             "type": "string"
         },
         "vmname": {
-            "defaultValue": "onprembutnotreally",
+            "defaultValue": "onprembutnot",
             "type": "string"
         },
         "location": {
@@ -15,7 +15,7 @@
             "type": "string"
         },
         "servers_serverlessserverpoc_name": {
-            "defaultValue": "serverlessserverpoc",
+            "defaultValue": "myserverlessdbserver",
             "type": "String"
         },
         "adventureworks_dbname": {
@@ -30,9 +30,19 @@
             "defaultValue": "",
             "type": "string"
         },
-        "sql_admin_account": {
+        "sqladmin_account": {
             "defaultValue": "POCAdmin",
             "type": "string"
+        },
+        "vmadmin_name": {
+            "defaultValue": "captainawesome",
+            "type": "string"
+        },
+        "vmadmin_pw": {
+            "type": "securestring"
+        },
+        "sqladmin_pw": {
+            "type": "securestring"
         }
     },
     "variables": {},
@@ -142,7 +152,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
-            "name": "[concat(parameters('rg'), 'diagnostics')]",
+            "name": "[concat(parameters('rg'), 'diag')]",
             "location": "[parameters('location')]",
             "tags": {
                 "SharePoint": "Yes",
@@ -237,9 +247,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "2019-06-01",
-            "name": "[concat(concat(parameters('rg'), 'diagnostics'), '/default')]",
+            "name": "[concat(concat(parameters('rg'), 'diag'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diagnostics'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diag'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
@@ -257,9 +267,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "2019-06-01",
-            "name": "[concat(concat(parameters('rg'), 'diagnostics'), '/default')]",
+            "name": "[concat(concat(parameters('rg'), 'diag'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diagnostics'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diag'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
@@ -282,7 +292,7 @@
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmname'), '_nic'))]",
-                "[resourceId('Microsoft.Storage/StorageAccounts', concat(parameters('vmname'), '_nic'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diag'))]"
             ],
             "tags": {
                 "SharePoint": "Yes",
@@ -301,40 +311,25 @@
                     },
                     "osDisk": {
                         "osType": "Windows",
-                        "name": "[concat(parameters('vmname'), '_OsDisk_1_93e463de7f8d4fcb8c142746a9632659')]",
+                        "name": "[concat(parameters('vmname'), '_OsDisk')]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
-                            "storageAccountType": "Premium_LRS",
-                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('vmname'), '_OsDisk_1_93e463de7f8d4fcb8c142746a9632659'))]"
+                            "storageAccountType": "Premium_LRS"
                         },
                         "diskSizeGB": 127
-                    },
-                    "dataDisks": [
-                        {
-                            "lun": 1,
-                            "name": "[concat(parameters('vmname'), '_SmallDisk')]",
-                            "createOption": "Attach",
-                            "caching": "None",
-                            "managedDisk": {
-                                "storageAccountType": "StandardSSD_LRS",
-                                "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('vmname'), '_SmallDisk'))]"
-                            },
-                            "diskSizeGB": 128,
-                            "toBeDetached": false
-                        }
-                    ]
+                    }
                 },
                 "osProfile": {
                     "computerName": "[parameters('vmname')]",
-                    "adminUsername": "mhomol",
+                    "adminUsername": "[parameters('vmadmin_name')]",
+                    "adminPassword": "[parameters('vmadmin_pw')]",
                     "windowsConfiguration": {
                         "provisionVMAgent": true,
                         "enableAutomaticUpdates": true
                     },
                     "secrets": [],
-                    "allowExtensionOperations": true,
-                    "requireGuestProvisionSignal": true
+                    "allowExtensionOperations": true
                 },
                 "networkProfile": {
                     "networkInterfaces": [
@@ -346,7 +341,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[concat('https://', concat(parameters('rg'), 'diagnostics'), '.blob.core.windows.net/')]"
+                        "storageUri": "[concat('https://', concat(parameters('rg'), 'diag'), '.blob.core.windows.net/')]"
                     }
                 }
             }
@@ -354,10 +349,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2019-06-01",
-            "name": "[concat(concat(parameters('rg'), 'diagnostics'), '/default/bootdiagnostics-windowsde-37b163d0-8691-4a7c-83ad-754ae6121740')]",
+            "name": "[concat(concat(parameters('rg'), 'diag'), '/default/bootdiagnostics-windowsde-37b163d0-8691-4a7c-83ad-754ae6121740')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', concat(parameters('rg'), 'diagnostics'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diagnostics'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', concat(parameters('rg'), 'diag'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(parameters('rg'), 'diag'))]"
             ],
             "properties": {
                 "publicAccess": "None"
@@ -417,7 +412,8 @@
             },
             "kind": "v12.0",
             "properties": {
-                "administratorLogin": "[parameters('sql_admin_account')]",
+                "administratorLogin": "[parameters('sqladmin_account')]",
+                "administratorLoginPassword": "[parameters('sqladmin_pw')]",
                 "version": "12.0",
                 "publicNetworkAccess": "Enabled"
             }
@@ -759,7 +755,7 @@
                 "weeklyRetention": "PT0S",
                 "monthlyRetention": "PT0S",
                 "yearlyRetention": "PT0S",
-                "weekOfYear": 0
+                "weekOfYear": 2
             }
         },
         {
