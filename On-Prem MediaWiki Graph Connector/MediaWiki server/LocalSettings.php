@@ -36,7 +36,7 @@ $wgResourceBasePath = $wgScriptPath;
 
 ## The URL path to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
-$wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
+$wgLogo = "https://homol.work/img/homol-works-title-logo.png";
 
 ## UPO means: this is also a user preference option
 
@@ -148,7 +148,7 @@ $wgDiff3 = "/usr/bin/diff3";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'vector', 'monobook':
-$wgDefaultSkin = "timeless";
+$wgDefaultSkin = "monobook";
 
 # Enabled skins.
 # The following skins were automatically enabled:
